@@ -11,12 +11,12 @@
     <p>The following is a short description on how to setup OpenStack Horizon in PyCharm. Unfortunately Django, the web-framework used by Horizon, is only supported in PyCharm Professional - The community edition is not sufficient.</p>
     <p>A prerequisite is a running OpenStack installation. Horizon needs at least Keystone to communiacte to, although other services are needed as well to do anything useful. My recommendation is to use a devstack installation in a virtual machine. The development Horizon will still run on the local machine but it will point the Keystone within the devstack VM.</p>
 
-    <h2>Step by step</h2>
+    <h2>Development environment - Step by step</h2>
     <ol>
         <li>Clone the horizon repository: <i>git clone https://github.com/openstack/horizon.git</i></li>
         <li>From the cloned directory, run: <i>./runtests.sh</i>. This will create a virtual environment and run all tests against that environment.</li>
         <li>Create the file local_settings.py from the example provided by Horizon: <i>cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py</i></li>
-        <li>Open the file openstack_dashboard/local/local_settings.py and search for OPENSTACK_HOST. Change this variable to point to your local devstack installation.</li>
+        <li>Open the file <i>openstack_dashboard/local/local_settings.py</i> and search for OPENSTACK_HOST. Change this variable to point to your local devstack installation.</li>
         <li>Start PyCharm
         <li>Click <i>Create New Project</i></li>
         <li>Cick <i>Django</i></li>
@@ -26,5 +26,32 @@
         <li>Run Horizon by clicking on the <i>Run</i> icon or the <i>Debug</i> icon at the top right corner.<br><img src="horizon_pycharm/run.png"></li>
         <li>Horizon should now be aviable under <i>http://localhost:8001</i></li>
     </ol>
+
+    <h2>Enable debug logging to the console</h2>
+    <p>By default Horizon logs all messages with INFO level or higher to the console. For development purposes it makes sense to change this to DEBUG. This can be changed in the file <i>openstack_dashboard/local/local_settings.py</i>. In this file, search for LOGGING and change the console handler to DEBUG.</p>
+
+    <pre>
+...
+LOGGING = {
+    'version': 1,
+    # When set to True this will disable all logging except
+    # for loggers specified in this configuration dictionary. Note that
+    # if nothing is specified here and disable_existing_loggers is True,
+    # django.db.backends will still log unless it is disabled explicitly.
+    'disable_existing_loggers': False,
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
+        },
+        'console': {
+            # Set the level to "DEBUG" for verbose output logging.
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+...
+    </pre>
+
 </body>
 </html>
