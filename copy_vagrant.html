@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How to copy a vagrant image to another machine</title>
+</head>
+<body>
+    <h1>How to copy a vagrant image to another machine</h1>
+    <p>Author: <a href="http://jonaspf.github.io/" rel="author">Jonas Pfannschmidt</a><br>Email: jonas.pfannschmidt at gmail.com<br>Date: 29/10/2015</p>
+
+    <h2>Introduction</h2>
+    <p>Copying a vagrant image to another machine can be tricky and you usually shouldn't do that at all. The whole point of vagrant is to reproducible create and provision VMs from <b>only</b> the Vagrantfile.</p>
+    <p>If for whatever reason you need to do it anyway, here are the steps (Main source: <a href="http://stackoverflow.com/questions/19094024/is-there-any-way-to-clone-a-vagrant-box-that-is-already-installed">http://stackoverflow.com/questions/19094024/is-there-any-way-to-clone-a-vagrant-box-that-is-already-installed</a>)</p>
+
+    <h2>Step by step</h2>
+    <ol>
+        <li>Copy the ssh key from <i>~/.vagrant.d/insecure_private_key</i> and append it to the same file on the other machine. This is necessary to be able to log into the VM later.</li>
+        <li>Check the VM name: <i>VBoxManage list vms</i></li>
+        <li>Package the vagrant VM: <i>vagrant package --base vm-name --output /path/to/mybox.box</i></li>
+        <li>Copy the *.box file and the Vagrantfile to the other machine</li>
+        <li>Modify the Vagrantfile: <i>config.vm.box_url= "/path/to/mybox.box"</i></li>
+        <li>Run the VM: <i>vagrant up</i></li>
+    </ol>
+
+</body>
+</html>
