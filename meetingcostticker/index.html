@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="css/meeting.css">
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/ui/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/globalize/globalize.js"></script>
+        <script type="text/javascript" src="js/meeting.js"></script>
+ 
+        <div id="container" class="box">
+            <div id="help">
+                <h1>Meeting cost ticker</h1>
+                <p>This tool helps to visualize the cost of a meeting. Set it up at the beginning of a meeting and position your monitor so that everyone can see it. You'll be amazed how much faster decisions are made when everyone sees the cost of making them.</p>
+
+                <p>Just select the number of attendees for each role and click on the start button.</p>
+
+                <p>The roles and salaries are based on the <a target="_blank" href="http://www.computerworld.com/s/article/9237351/IT_Salary_Survey_2013">Computerworld IT salary survey 2013</a> carried out in the U.S and most likely <b>highly inaccurate</b> for your particular situation. You can adjust them by clicking on the wrench icon.</p>
+            </div>
+
+
+            <div id="result">
+                <div id="result_centered">
+                    <p>Time: <span id="time"></span></p>
+                    <p>Cost: <span id="cost"></span></p>
+                </div>
+            </div>
+
+            <button id="start" onClick="start()">Start</button>
+            <button id="pause" onClick="pause()">Pause</button>
+            <button id="reset" onClick="reset()">Reset</button>
+        </div>
+
+        <div id="configuration" title="Configuration">
+            <h2>Roles &amp; Salaries</h2>
+
+            <table id="configuration_roles"></table>
+
+            <button id="add_role" class="small">Add Role</button>
+
+            <hr/>
+
+            <p>
+                <label for="workHoursPerWeek">Average work hours per week:</label><br/>
+                <input id="workHoursPerWeek" name="value" />
+            </p>
+
+            <p>
+                <label for="vacationInDays">Paid vacation days (incl. national holidays):</label><br/>
+                <input id="vacationInDays" name="value" />
+            </p>
+
+            <p>
+                <label for="employeeCostFactor">Factor to calculate employee cost from salary*:</label><br/>
+                <input id="employeeCostFactor" name="value" /><br/>
+                <span class="footnote">* There are lots of hidden costs for an employee besides the salary (Taxes, insurances, office space, electricity, HR departments, ..). To calculate the true cost of an employee this tool multiplies the salary by a factor, usually somewhere between 1,5 and 2.5. This is of course highly inaccurate and varies from region to region but it's good enough as a rule of thumb.</span>
+            </p>
+        </div>
+
+
+        <div id="attendance" class="box">
+            <h2>Attendance<button id="configure" class="small">Configure</button></h2>
+
+            <div id="attendance_roles"></div>
+        </div>
+
+
+    </body>
+</html>
