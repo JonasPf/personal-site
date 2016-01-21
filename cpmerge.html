@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="description">Description</h1>
+<p>cpmerge is a simple clipboard manager to synchronize CLIPBOARD and PRIMARY.</p>
+<p>Linux has two types of clipboards:</p>
+<ul>
+<li>PRIMARY: Copy by selecting text, paste by middle mouse click<br /></li>
+<li>CLIPBOARD: Copy by using the copy command (usually: CTRL+c), paste by using the paste command (usually: CTRL+v)</li>
+</ul>
+<p>cpmerge merges these two clipboards into one. Whenever you copy something into the CLIPBOARD it will automatically be copied into PRIMARY. However when you select something into PRIMARY it waits until you've moved the mouse a little bit before copying it into CLIPBOARD. The reason for this that a lot of people select some text and press CTRL+v to overwrite the selected text. If PRIMARY got copied into CLIPBOARD straight away this would just replace the selected text with itself.</p>
+<p>If run with GUI it also keeps track of the last 10 clipboard entries. A taskbar icon allows to copy those old values into the clipboard again.</p>
+<h1 id="installation">Installation</h1>
+<p>Python 2.7 should already be installed on most systems.<br />wxPython and pip need to be installed as well. On my Ubuntu machine (with Universe activated) this can be done with:</p>
+<pre><code>sudo apt-get install python-pip -y
+sudo apt-get install python-wxgtk2.8 -y</code></pre>
+<p>After those requirements are installed, just run:</p>
+<pre><code>sudo pip install cpmerge</code></pre>
+<p>cpmerge can be started by simply running:</p>
+<pre><code>cpmerge</code></pre>
+<h1 id="configuration">Configuration</h1>
+<p>To run it without tray icon and history:</p>
+<pre><code>cpmerge --nogui</code></pre>
+<p>Depending on your screen resolution (and how nervous your mouse hand is) you may need to tweak the distance the mouse needs to be moved before copying from PRIMARY to CLIPBOARD. You can do this with:</p>
+<pre><code>cpmerge --distance=20</code></pre>
+<p>For debugging information regarding the mouse distance, run:</p>
+<pre><code>cpmerge -vv</code></pre>
+<h1 id="other-stuff">Other stuff</h1>
+<p>Py_mem.py tells me that cpmerge uses 35.8 MB of memory. While this is not a huge amount by todays standard I still consider it a lot for the simple task. If you know a tool with similar features which uses less resources, please let me know.</p>
+<p>Similar tools (none of them supports the mouse movement before PRIMARY -&gt; CLIPBOARD as far as I'm aware) are listed on: <a href="https://wiki.archlinux.org/index.php/clipboard">https://wiki.archlinux.org/index.php/clipboard</a></p>
+<ul>
+<li>Homepage: <a href="http://jonaspfannschmidt.com/cpmerge">http://jonaspfannschmidt.com/cpmerge</a><br /></li>
+<li>Code: <a href="http://github.com/jonaspf/cpmerge">http://github.com/jonaspf/cpmerge</a><br /></li>
+<li>Icon from: <a href="http://led24.de/iconset/">http://led24.de/iconset/</a></li>
+</ul>
+</body>
+</html>
