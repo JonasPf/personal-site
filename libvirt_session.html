@@ -1,0 +1,93 @@
+<html xmlns:tomboy="http://beatniksoftware.com/tomboy" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns:link="http://beatniksoftware.com/tomboy/link"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Using qemu:///session with bridged network</title><style type="text/css">
+	body {  }
+	h1 { font-size: xx-large;
+     	     font-weight: bold;
+     	     border-bottom: 1px solid black; }
+	div.note {
+		   position: relative;
+		   display: block;
+		   padding: 5pt;
+		   margin: 5pt; 
+		   white-space: -moz-pre-wrap; /* Mozilla */
+ 	      	   white-space: -pre-wrap;     /* Opera 4 - 6 */
+ 	      	   white-space: -o-pre-wrap;   /* Opera 7 */
+ 	      	   white-space: pre-wrap;      /* CSS3 */
+ 	      	   word-wrap: break-word;      /* IE 5.5+ */ }
+	</style></head><body><div class="note" id="Using qemu:///session with bridged network"><a name="using%20qemu:///session%20with%20bridged%20network"></a><h1></h1><strike>
+</strike>
+libvirt offers two ways of  using the qemu/kvm hypervisor:
+
+1. <b>qemu:///system: </b>Connects to the system libvirtd instance which is running as root<b>
+</b>2. <b>qemu:///session: </b>Connects to (or starts) a libvirtd instance which is running as the current user<b>
+
+</b>A detailed explanation can be found at: <a style="color:#3465A4" href="http://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html">http://blog.wikichoon.com/2016/01/qemusystem-vs-qemusession.html</a> and on the official libvirt website: <a style="color:#3465A4" href="http://wiki.libvirt.org/page/FAQ#What_is_the_difference_between_qemu:.2F.2F.2Fsystem_and_qemu:.2F.2F.2Fsession.3F_Which_one_should_I_use.3F">http://wiki.libvirt.org/page/FAQ#What_is_the_difference_between_qemu:.2F.2F.2Fsystem_and_qemu:.2F.2F.2Fsession.3F_Which_one_should_I_use.3F</a>. 
+
+To sum it up: <b>qemu:///session</b> avoids permission issues because it runs as the current user whereas <b>qemu:///system </b>allows the use of more advanced networking options which require root. 
+
+Historically <b>qemu:///session</b> didn't allow to connect to a bridge, instead it used qemu's usermode networking which is a standalone implementation of the tcp/ip stack. There are a couple of downsides to this:
+
+<ul><li dir="ltr">The guest is completely isolated and can't participate in the network directly
+</li><li dir="ltr">To connect to the guest it is necessary to configure port forwarding from the host
+</li><li dir="ltr">Network performance is slow</li></ul>
+
+Luckily there is now a way to use existing bridges with <b>qemu:///session</b>. The tool <b>qemu-bridge-helper </b>can configure a tap device which connects the guest to a bridge. Unfortunately it doesn't seem to be configured correctly out-of-the-box in Ubuntu.
+
+<span style="font-size:large">Building libvirt from source</span>
+
+I couldn't get this to work with the version of libvirt that ships with Ubuntu (I tested 14.04 and 15.10). So this is how I built the latest libvirt from source:
+
+1. Install dependencies:
+
+    sudo apt-get install libyajl-dev libxml2-dev libdevmapper-dev libpciaccess-dev libnl-3-dev libnl-route-3-dev
+
+2. Configure &amp; Compile
+
+    ./configure &amp;&amp; make
+
+3. Install it (see
+
+    sudo checkinstall
+
+4. Update shared libraries
+
+    sudo ldconfig
+
+5. Kill existing libvirtd instances (they will be started automatically in the following steps)
+
+    killall libvirtd
+
+<span style="font-size:large">Configuration</span>
+
+Here are the steps that allowed me to get it working on Ubuntu 14.04 and 15.10:
+
+1. Install libvirt, kvm and other dependencies:
+
+   sudo apt-get install libvirt0 libvirt-bin virtinst qemu-kvm
+
+2. Add the user to the group 'libvirtd'. Don't forget to logout/login after this step.
+
+    sudo usermod -a -G libvirtd [user]
+
+2. Double-check that the default libvirt network and a bridge exists:
+
+    virsh net-list              	# Should list the network 'default'
+    virsh net-start default	# Start the network if it is inactive
+    virsh net-info default  	# Should show 'Bridge: virbr0'
+    brctl show                	# Should list the bridge 'virbr0'
+
+3. Allow <b>qemu-bridge-helper </b>to use the bridge by putting the following into <a style="color:#3465A4" href="/etc/qemu/bridge.conf">/etc/qemu/bridge.conf</a>:
+
+    allow virbr0
+
+4. <b>qemu-bridge-helper </b>needs root permissions to create the tap device. To allow a normal user to do this we need to set the suid bit:
+
+    sudo chmod u+s <a style="color:#3465A4" href="/usr/lib/qemu-bridge-helper">/usr/lib/qemu-bridge-helper</a>
+
+5. Start a new VM similar to this:
+
+    virt-install --connect qemu:///session --network bridge=virbr0 --name test --ram 128 --disk path=VirtualMachines/cirros-0.3.4-i386-disk.img  --boot hd
+
+The new VM should automatically get an ip address from the libvirt dhcp server and it should be possible to ping/ssh from the host to the guest.
+
+
+</div></body></html>
