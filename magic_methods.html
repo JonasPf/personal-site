@@ -55,6 +55,7 @@ a.weekday()
 
 Everything is an object:
 
+```
 >>> a = 5
 >>> a.__class__
 <type 'int'>
@@ -62,15 +63,18 @@ Everything is an object:
 <type 'int'>
 >>> id(a)
 38428920
+```
 
 More strict: Smalltalk ("if" and loops are object-methods)
 Less strict: Java ("primitive" types)
 
 Objects get recycled:
 
+```
 >>> b = 5
 >>> id(b)
 38428920
+```
 
 This works because most of the simple datatypes in Python are immutable.
 
