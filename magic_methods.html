@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Python Magic Methods</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .footnote {
+        font-size: 0.6em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+class: middle
+
+---
+
+# Building blocks of object orientated systems
+
+- Classes
+- Objects
+- Methods
+
+```python
+from datetime import date
+
+a = date(2016, 1, 1)
+a.weekday()
+```
+
+.footnote[Python Version: 2.7]
+
+???
+
+- Usually classes are camelcase but sometimes Python is inconsistent
+- Show Class/Object/Method in the code
+
+---
+
+# (nearly) everything in Python is an object!
+
+???
+
+Everything is an object:
+
+>>> a = 5
+>>> a.__class__
+<type 'int'>
+>>> type(a)
+<type 'int'>
+>>> id(a)
+38428920
+
+More strict: Smalltalk ("if" and loops are object-methods)
+Less strict: Java ("primitive" types)
+
+Objects get recycled:
+
+>>> b = 5
+>>> id(b)
+38428920
+
+This works because most of the simple datatypes in Python are immutable.
+
+---
+
+class:  middle
+
+# ... but it doesn't enforce object oriented code
+
+```python
+def add_five(number):
+  return 5 + number
+
+result = add_five(2)
+print result
+```
+
+---
+
+# (hidden) objects and methods
+
+```python
+def add_five(number):
+  return 5 + number
+
+result = add_five(2)
+print result
+```
+
+???
+
+Show in repl:
+
+```python
+type('add_five')
+a = 5
+type(a)
+dir(a)
+a.__add__(3)
+help(a.__add__)
+print a
+print str(a)
+print a.__str__()
+```
+- Operator overloading in other programming languages
+- __??? is a Python convention
+
+---
+
+# ... without 'syntactic sugar'
+
+```python
+def add_five(number):
+  return int(5).__add__(number)
+
+result = add_five.__call__(2)
+print result.__str__()
+```
+
+---
+
+# Implementing +
+
+```python
+class SuperNumber(object):
+  def __init__(self, number):
+    self.number = number
+
+  def __add__(self, other):
+    return self.number + (other * 2)
+
+a = SuperNumber(5)
+a + 3
+```
+
+???
+
+Explain: __init__
+
+Show also:
+
+```python
+a - 3
+a.__sub__(3)
+```
+
+Contracts: 
+
+  "If one of those methods does not support the operation with the supplied arguments, it should return NotImplemented.""
+  
+  https://docs.python.org/2/reference/datamodel.html#emulating-numeric-types
+
+Old-style class vs. new-style class
+
+---
+
+# Learned so far:
+
+
+- Python built-in functions:
+  - `id`
+  - `type`
+  - `dir`
+- Simple types in Python are immutable and get reused
+- A lot of 'syntactic sugar' in Python calls magic methods behind the scenes
+- Contracts
+- Magic methods:
+  - `__init__`
+  - `__add__`
+  - `__sub__`
+
+
+---
+
+# Modifying attributes
+
+```python
+class X(object):
+    def __getattr__(self, name):
+        print("You accessed " + name)
+        
+    def __setattr__(self, name, value):
+        print("You set {} to {}".format(name, value))
+
+x = X()
+x.a
+x.a = 3
+```
+
+---
+
+# String methods
+
+```python
+# repr(object) -> "official" string representation
+object.__repr__(self) 
+
+# str(object) -> readable string represenation
+object.__str__(self)  
+
+# unicode(object) -> readable string representation in with foreign characters
+object.__unicode__(self) 
+```
+
+---
+
+# Comparison 1
+
+```python
+class Name(object):
+  def __init__(self, firstname, surname):
+    self.firstname = firstname
+    self.surname = surname
+
+jonas = Name('Jonas', 'Pfannschmidt')
+jonas2 = Name('Jonas', 'Pfannschmidt')
+
+jonas == jonas2
+```
+
+---
+
+# Comparison 2
+
+```python
+class object:
+  def __eq__(self, other):
+    return id(self) == id(other)
+```
+
+or
+
+```python
+class object:
+  def __eq__(self, other):
+    return self is other
+```
+
+---
+
+# Comparison 3
+
+```python
+class Name(object):
+  def __init__(self, firstname, surname):
+    self.firstname = firstname
+    self.surname = surname
+
+  def __eq__(self, other):
+    return self.firstname == other.firstname \
+       and self.surname == other.surname
+
+jonas = Name('Jonas', 'Pfannschmidt')
+jonas2 = Name('Jonas', 'Pfannschmidt')
+
+jonas == jonas2
+```
+
+---
+
+# More comparison
+
+Old comparison method:
+
+```python
+object.__cmp__(self, other) # returns -1, 0 or 1
+```
+
+
+New comparison methods:
+
+```python
+object.__lt__(self, other) # object <  other
+object.__le__(self, other) # object <= other
+object.__eq__(self, other) # object == other
+object.__ne__(self, other) # object != other
+object.__gt__(self, other) # object >  other
+object.__ge__(self, other) # object >= other
+```
+
+Don't forget about
+
+```python
+functools.total_ordering()
+```
+
+---
+
+# Hash 1
+
+> An object is hashable if it has a hash value which never changes during its lifetime (it needs a __hash__() method), and can be compared to other objects (it needs an __eq__() or __cmp__() method). Hashable objects which compare equal must have the same hash value.
+
+---
+
+# Hash 2
+
+```python
+class Name(object):
+  def __init__(self, firstname, surname):
+    self.firstname = firstname
+    self.surname = surname
+
+  def __eq__(self, other):
+    return self.firstname == other.firstname \
+       and self.surname == other.surname
+
+  def __hash__(self):
+    return hash((self.firstname, self.surname))
+
+name = Name('Jonas', 'Pfannschmidt')
+hash(name)
+```
+
+---
+
+class: center, middle
+
+# Types
+
+![types](types.gif)
+
+---
+
+# Containers
+
+```python
+class ThreeList(object):
+    def __init__(self):
+        self.value1 = None
+        self.value2 = None
+        self.value3 = None
+
+    def __len__():
+        return 3
+
+    def __setitem__(self, key, value):
+        if key == 1:
+            self.value1 = value
+        elif key == 2:
+            self.value2 = value
+        elif key == 3:
+            self.value3 = value
+
+    def __getitem__(self, key):
+        if key == 1:
+            return self.value1
+        elif key == 2:
+            return self.value2
+        elif key == 3:
+            return self.value3
+
+x = ThreeList()
+x[1] = 'hello'
+len(x)
+```
+
+---
+
+# Calling something
+
+```python
+class X(object):
+  def __call__(sel, args):
+    print "You called with {}".format(args) 
+        
+x = X()
+x('test')
+```
+
+---
+
+# Links
+
+- https://docs.python.org/2/reference/datamodel.html
+- https://docs.python.org/2/library/stdtypes.html
+- http://www.bpython-interpreter.org/
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+ 
