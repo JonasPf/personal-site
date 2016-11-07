@@ -92,18 +92,6 @@ result = add_five(2)
 print result
 ```
 
----
-
-# (hidden) objects and methods
-
-```python
-def add_five(number):
-  return 5 + number
-
-result = add_five(2)
-print result
-```
-
 ???
 
 Show in repl:
@@ -115,10 +103,8 @@ type(a)
 dir(a)
 a.__add__(3)
 help(a.__add__)
-print a
-print str(a)
-print a.__str__()
 ```
+
 - Operator overloading in other programming languages
 - __??? is a Python convention
 
@@ -127,12 +113,19 @@ print a.__str__()
 # ... without 'syntactic sugar'
 
 ```python
-def add_five(number):
-  return int(5).__add__(number)
+class AddFiveClass(object):
+  def __call__(self, number):
+    return int(5).__add__(number)
+
+add_five = AddFiveClass()
 
 result = add_five.__call__(2)
 print result.__str__()
 ```
+
+???
+
+This is not exactly what's happening but it is a pretty good aproximation.
 
 ---
 
@@ -185,6 +178,7 @@ Old-style class vs. new-style class
   - `__init__`
   - `__add__`
   - `__sub__`
+  - `__call__`
 
 
 ---
@@ -193,7 +187,7 @@ Old-style class vs. new-style class
 
 ```python
 class X(object):
-    def __getattr__(self, name):
+    def __getattribute__(self, name):
         print("You accessed " + name)
         
     def __setattr__(self, name, value):
@@ -203,6 +197,11 @@ x = X()
 x.a
 x.a = 3
 ```
+
+???
+
+Carefull: There is also __getattr__ which is only called if the attribute
+does not exist yet.
 
 ---
 
