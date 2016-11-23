@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTTP and the Requests library</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .footnote {
+        font-size: 0.6em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+class: middle
+
+---
+
+# HTTP(s) in 15 minutes (1/5)
+
+- Hypertext Transfer Protocol
+- Powers the World Wide Web (and RESTful APIs)
+- Versions: 
+  - 1.0
+  - 1.1 
+  - 2
+- Port: 80
+- Stateless but there are different 'workarounds':
+  - Cookies
+  - Session IDs or Tokens in header or url
+
+???
+
+- 1.1: Persistent connections, requires Host header (useful for proxies and multiple sites per ip)
+- 2: Multiple resource (html, css, images) can be transfered in one request
+
+---
+
+# HTTP(s) in 15 minutes (2/5)
+
+- Request methods
+  - GET
+  - POST
+  - PUT
+  - DELETE
+  - ...
+
+---
+
+# HTTP(s) in 15 minutes (3/5)
+
+- Response status codes
+  - 200 - Ok
+  - 301 - Moved
+  - 4xx - Error
+  - ...
+
+---
+
+# HTTP(s) in 15 minutes (4/5)
+
+
+```
+> telnet proxy.sdc.hp.com 8080
+Trying 16.46.41.11...
+Connected to proxy-llb-sdc02.uk.hpecorp.net.
+Escape character is '^]'.
+GET /index.html HTTP/1.1
+Host: google.ie
+```
+
+---
+
+# HTTP(s) in 15 minutes (5/5)
+
+- Encryption with TLS or its predecessor SSL
+- HTTPS provides:
+  - Authentication (one or two way)
+  - Privacy while information is transfered
+  - Data integrity
+- Port: 443
+- Certificates
+  - Contain encryption keys and information about the identity
+  - Handed out by certificate authorities (CAs)
+  - LetsEncrypt is a free CA
+
+
+---
+
+# HTTP client libraries in Python
+
+<table border="1" cellspacing="0" cellpadding="5" class="Table1" style="font-size: 0.5em"><colgroup><col width="186"/><col width="186"/><col width="186"/><col width="186"/></colgroup><tr><th style="text-align:left;width:4.249cm; " class="Table1_A1"><p class="P1">Python 2</p></th><th style="text-align:left;width:4.251cm; " class="Table1_A1"><p class="P1">Python 3</p></th><th style="text-align:left;width:4.249cm; " class="Table1_A1"><p class="P1">Description</p></th><th style="text-align:left;width:4.251cm; " class="Table1_D1"><p class="P1">Use for</p></th></tr><tr><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">urllib</p></td><td style="text-align:left;width:4.251cm; " class="Table1_A2"><p class="P1">urllib.request<br/>urllib.parse<br/>urllib.error</p></td><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">Severly limited standard library for HTTP/HTTPS/FTP.</p><p class="P1"> </p><p class="P3"><span class="T2">Insecure: </span>Does not check the identity (Certificate) for HTTPS.</p></td><td style="text-align:left;width:4.251cm; " class="Table1_D2"><p class="P1">Don’t use it for connecting to servers  if you can avoid it.<br/><br/>Some utility functions, like urllib.urlencode can be useful sometimes.</p></td></tr><tr><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">urllib2</p></td><td style="text-align:left;width:4.251cm; " class="Table1_A2"><p class="P1">urllib.request<br/>urllib.error</p></td><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P2">Standard library for HTTP/HTT<span class="T1">P</span>S.<br/><br/>Can be very verbose for more advanced use cases.</p></td><td style="text-align:left;width:4.251cm; " class="Table1_D2"><p class="P2">If you can’t use requests for some reason</p></td></tr><tr><td colspan="2" style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P2">urllib3</p></td><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="Table_20_Contents">????</p></td><td style="text-align:left;width:4.251cm; " class="Table1_D2"><p class="Table_20_Contents">???</p></td></tr><tr><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">httplib</p></td><td style="text-align:left;width:4.251cm; " class="Table1_A2"><p class="P1">http.lib</p></td><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1"><span class="T1">Standard library that provides l</span>ow level <span class="T1">HTTP/HTTPS</span> functionality.</p></td><td style="text-align:left;width:4.251cm; " class="Table1_D2"><p class="P1">When you need complete control and don’t mind writing more code</p></td></tr><tr><td colspan="2" style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">requests</p></td><td style="text-align:left;width:4.249cm; " class="Table1_A2"><p class="P1">Easy to use external http/https library.<br/><br/>HTTP for humans.</p></td><td style="text-align:left;width:4.251cm; " class="Table1_D2"><p class="P1">Use this if using an external library is acceptable</p></td></tr></table>
+
+---
+
+# urllib Utilities
+
+```python
+import urllib
+
+urllib.urlencode({'test': 'blabla', 'foo': 'bar'})
+urllib.urlencode({'test': 'bla bla', 'foo': 'b *ar'})
+
+urllib.getproxies()
+
+```
+
+---
+
+# urllib2 - Simple example
+
+```python
+import urllib2
+
+response = urllib2.urlopen('http://www.google.ie')
+response.code
+response.read()
+info = response.info()
+info.headers
+```
+
+---
+
+# urllib2 - Complex example
+
+```python
+import urllib2
+
+request = urllib2.Request(url='https://httpbin.org/basic-auth/user/passwd')
+request.add_header('User-agent', 'Mozilla/5.0')
+request.add_header('Referer', 'http://www.python.org/')
+auth_handler = urllib2.HTTPBasicAuthHandler()
+auth_handler.add_password(user='user', 
+                          passwd='passwd', 
+                          realm='Fake Realm', 
+                          uri='https://httpbin.org/basic-auth/user/passwd')
+opener = urllib2.build_opener(auth_handler)
+urllib2.install_opener(opener)
+response = urllib2.urlopen('https://httpbin.org/basic-auth/user/passwd')
+print response.code
+print response.read()
+```
+
+---
+
+# Requests: HTTP for Humans *
+
+
+```python
+import requests
+
+headers = {'User-agent': 'Mozilla/5.0', 'Referer': 'http://www.python.org/'}
+credentials = ('user', 'passwd')
+response = requests.get('https://httpbin.org/basic-auth/user/passwd', 
+                        auth=credentials, 
+                        headers=headers)
+print response.status_code
+print response.content
+```
+
+.footnote[\* by Kenneth Reitz]
+
+---
+
+Most of the following examples are inspired (or just copied) from: http://docs.python-requests.org/en/master/user/quickstart/
+
+---
+
+# POST
+
+```python
+import requests
+
+data = {
+  'code': 'hello world',
+  'language': 'text'
+}
+
+r = requests.post('http://paste.openstack.org', data=data)
+r.status_code
+r.url
+
+```
+
+---
+
+# Other HTTP methods
+
+```python
+r = requests.put('http://httpbin.org/put', data = {'key':'value'})
+r = requests.delete('http://httpbin.org/delete')
+r = requests.head('http://httpbin.org/get')
+r = requests.options('http://httpbin.org/get')
+```
+
+---
+
+# Parameters
+
+```python
+import requests
+
+data = {
+  'hello': 'world',
+  'foo': 'bar'
+}
+r = requests.get('https://httpbin.org/get', params=data)
+r.url
+
+from pprint import pprint
+
+pprint(r.json())
+```
+
+---
+
+# Response content
+
+```python
+import requests
+
+r = requests.get('https://httpbin.org/encoding/utf8')
+r.encoding
+r.text
+r.content
+r.encoding = 'ISO-8859-1'
+r.text
+```
+
+
+???
+
+- r.content returns the raw bytes
+- r.text returns encoded strings
+
+---
+
+# Streaming a download
+
+```python
+import requests
+
+r = requests.get('https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png', stream=True)
+with open('wikipedia.png', 'wb') as fd:
+  for chunk in r.iter_content(1024):
+    fd.write(chunk)
+```
+
+---
+
+# Response status codes
+
+```python
+import requests
+
+r = requests.get('http://httpbin.org/get')
+r.status_code
+
+requests.codes.ok
+requests.codes.moved
+
+r.status_code == requests.codes.ok
+```
+
+---
+
+# Cookies
+
+Setting a cookie:
+
+```python
+import requests
+
+r = requests.get('http://httpbin.org/cookies', cookies={'hello': 'world'})
+print r.text
+```
+
+Reading cookies:
+
+```python
+r = requests.get('http://google.ie')
+r.cookies
+r.cookies.keys()
+r.cookies.list_domains()
+print r.cookies['NID']
+```
+
+---
+
+# Redirection and History
+
+```python
+import requests
+
+r = requests.get('http://google.ie')
+r.history
+r.history[0].status_code
+r.history[0].is_redirect
+r.history[0].is_permanent_redirect
+r.history[0].headers
+```
+
+---
+
+# Timeout
+
+```python
+import requests
+
+requests.get('http://github.com', timeout=0.001)
+```
+
+Use timeout in production code to avoid hanging indefinitely if there are connection problems!
+
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+ 
