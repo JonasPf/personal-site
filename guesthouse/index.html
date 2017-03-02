@@ -15,7 +15,13 @@
 				height: 400px;
 				background: #000;
 				margin: 0 auto;
-			}
+			}    
+			.galleria-thumb-nav-left, .galleria-thumb-nav-right { cursor:
+pointer; display: none; background-position: -495px 5px; position:
+absolute; left: 0; top: 0; height: 40px; width: 23px; z-index: 3;
+opacity: .8; filter: alpha(opacity=80); background-color: #999;
+
+}
 		</style>
 
 		<!--[if lt IE 9]>
@@ -25,21 +31,20 @@
 
 	<body>
 		<div class="galleria">
-			<img src="https://placehold.it/350x150">
-			<img src="https://placehold.it/350x150">
-			<img src="https://placehold.it/350x150">
-			<img src="https://placehold.it/350x150">
+			<img src="images/20170227_145705.jpg">
+			<img src="images/20170227_145729.jpg">
 		</div>
 
 		<script>
-		(function() { 
+
 			Galleria.loadTheme('bower_components/galleria/dist/themes/fullscreen/galleria.fullscreen.js');
 			Galleria.configure({
+                                _hideDock: false,
 				imageCrop: false,
 				maxScaleRation: 1 // Don't scale
 			});
+
 			Galleria.run('.galleria');
-		}());
 		</script>
 	</body>
 </html>
