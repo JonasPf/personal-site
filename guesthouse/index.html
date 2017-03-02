@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Guest House</title>
+
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/galleria/dist/galleria.min.js"></script>
+
+		<style>
+			.galleria {
+				max-width: 700px;
+				height: 400px;
+				background: #000;
+				margin: 0 auto;
+			}
+		</style>
+
+		<!--[if lt IE 9]>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="galleria">
+			<img src="https://placehold.it/350x150">
+			<img src="https://placehold.it/350x150">
+			<img src="https://placehold.it/350x150">
+			<img src="https://placehold.it/350x150">
+		</div>
+
+		<script>
+		(function() { 
+			Galleria.loadTheme('bower_components/galleria/dist/themes/fullscreen/galleria.fullscreen.js');
+			Galleria.configure({
+				imageCrop: false,
+				maxScaleRation: 1 // Don't scale
+			});
+			Galleria.run('.galleria');
+		}());
+		</script>
+	</body>
+</html>
