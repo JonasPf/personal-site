@@ -14,7 +14,7 @@ contract MyCoin {
 		return true;
 	}
 
-	function getBalance(address addr) returns(uint) {
+	function getBalance(address addr) constant returns(uint) {
 		return balances[addr];
 	}
 }
