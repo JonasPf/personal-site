@@ -4,7 +4,7 @@ contract MyCoin {
 	mapping (address => uint) balances;
 
 	function MyCoin() {
-		balances[tx.origin] = 10000;
+		balances[msg.sender] = 10000;
 	}
 
 	function sendCoin(address receiver, uint amount) returns(bool sufficient) {
