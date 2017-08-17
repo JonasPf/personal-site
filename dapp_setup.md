@@ -43,47 +43,18 @@ We will build the following strucuture:
     npm init
     npm install --save-dev webpack
     npm install --save-dev webpack-dev-server
-    npm install -save truffle
+    npm install --save-dev file-loader
+    npm install --save-dev truffle
     npm install --save-dev ethereumjs-testrpc
-
-Create a new directory and add the file `package.json` with the following content:
-
-    {
-      "name": "splitter",
-      "version": "1.0.0",
-      "description": "",
-      "main": "index.js",
-      "scripts": {
-            "start": "webpack-dev-server --open --content-base build/app/ --output-public-path js",
-        "build": "truffle compile; webpack",
-            "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "author": "",
-      "license": "ISC",
-      "dependencies": {
-            "jquery": "^3.2.1",
-            "truffle": "^3.3.2",
-            "truffle-config": "^1.0.0",
-            "truffle-contract": "^2.0.1",
-            "truffle-expect": "0.0.3",
-            "web3": "^0.19.1",
-            "webpack": "^3.0.0"
-      },
-      "devDependencies": {
-            "ethereumjs-testrpc": "^4.0.1",
-            "file-loader": "^0.11.2",
-            "webpack-dev-server": "^2.5.0"
-      }
-    }
-
-Change values as needed. Then run:
-
-    npm install
+    npm install --save truffle-contract
+    npm install --save web3@0.20.1 # 1.0.0-beta doesn't work at the time of writing
+    npm install --save jquery
 
 This will install the following dependencies:
 
 * jquery - DOM manipulation library. Useful for small UIs
 * truffle - Smart contract development, testing and deployment tools
+* truffle-contract - JS abstraction to make it easier to interface with smart contracts
 * web3 - JS library to interface with smart contracts
 * webpack - JS bundler
 * file-loader - A webpack plugin used to make it aware of our index.html
@@ -105,6 +76,7 @@ Our javascript entry point is `app/js/app.js`. This should be the main javascrip
 Use the following template for the file `app/js/app.js`:
 
 TODO: Use strict
+
 TODO: Linter
 
     // Tell webpack to copy the index.html file to the build directory
@@ -124,11 +96,11 @@ TODO: Linter
             web3 = new Web3(web3.currentProvider);
         } else {
             // Your preferred fallback.
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'    )); 
+            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); 
         }
     
         // Use JSON info from 'truffle compile' to load the contract
-        Contract = truffleContract(require("../../build/contracts/    Contract.json"));
+        Contract = truffleContract(require("../../build/contracts/Contract.json")); 
         Contract.setProvider(web3.currentProvider);
     
         // To help with debugging we expose web3 and the contract as global vars. This way we can use them from the browser console
@@ -155,16 +127,15 @@ Use the following template for the file `app/index.html`:
             <meta name="author" content="TODO">
     
             <!--[if lt IE 9]>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3    /html5shiv.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
             <![endif]-->
         </head>
     
         <body>
             <!-- HTML code goes here -->
-
             <script src="js/app.js"></script>
         </body>
-
+    </html>
 
 # Deploy the smart contract
 
@@ -186,6 +157,23 @@ Test are stored in `./tests` and are written in mochajs. To run them, make sure 
 
     ./node_modules/.bin/truffle test
 
+# Configure webpack
+
+Create a new file `./webpack.config.js` with the following content:
+
+    var path = require('path');
+    
+    module.exports = {
+      entry: './app/js/app.js',
+      output: {
+        filename: 'app.js',
+        path: __dirname + '/build/app/js'
+      },
+      module: {
+        loaders: []
+      }
+    };
+
 # Start development http server
 
 Start the webpack-dev-server. This server serves and updates the compiled javascript file from memory and all the files in content-base:
@@ -200,7 +188,7 @@ And run it with:
 
 # Build the project
 
-TODO: Uglify
+TODO: Uglify/Minify
 
 Compile the smart contracts:
 

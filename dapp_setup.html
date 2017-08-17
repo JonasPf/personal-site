@@ -40,42 +40,17 @@
 <pre><code>npm init
 npm install --save-dev webpack
 npm install --save-dev webpack-dev-server
-npm install -save truffle
-npm install --save-dev ethereumjs-testrpc</code></pre>
-<p>Create a new directory and add the file <code>package.json</code> with the following content:</p>
-<pre><code>{
-  &quot;name&quot;: &quot;splitter&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;description&quot;: &quot;&quot;,
-  &quot;main&quot;: &quot;index.js&quot;,
-  &quot;scripts&quot;: {
-        &quot;start&quot;: &quot;webpack-dev-server --open --content-base build/app/ --output-public-path js&quot;,
-    &quot;build&quot;: &quot;truffle compile; webpack&quot;,
-        &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-  },
-  &quot;author&quot;: &quot;&quot;,
-  &quot;license&quot;: &quot;ISC&quot;,
-  &quot;dependencies&quot;: {
-        &quot;jquery&quot;: &quot;^3.2.1&quot;,
-        &quot;truffle&quot;: &quot;^3.3.2&quot;,
-        &quot;truffle-config&quot;: &quot;^1.0.0&quot;,
-        &quot;truffle-contract&quot;: &quot;^2.0.1&quot;,
-        &quot;truffle-expect&quot;: &quot;0.0.3&quot;,
-        &quot;web3&quot;: &quot;^0.19.1&quot;,
-        &quot;webpack&quot;: &quot;^3.0.0&quot;
-  },
-  &quot;devDependencies&quot;: {
-        &quot;ethereumjs-testrpc&quot;: &quot;^4.0.1&quot;,
-        &quot;file-loader&quot;: &quot;^0.11.2&quot;,
-        &quot;webpack-dev-server&quot;: &quot;^2.5.0&quot;
-  }
-}</code></pre>
-<p>Change values as needed. Then run:</p>
-<pre><code>npm install</code></pre>
+npm install --save-dev file-loader
+npm install --save-dev truffle
+npm install --save-dev ethereumjs-testrpc
+npm install --save truffle-contract
+npm install --save web3@0.20.1 # 1.0.0-beta doesn&#39;t work at the time of writing
+npm install --save jquery</code></pre>
 <p>This will install the following dependencies:</p>
 <ul>
 <li>jquery - DOM manipulation library. Useful for small UIs</li>
 <li>truffle - Smart contract development, testing and deployment tools</li>
+<li>truffle-contract - JS abstraction to make it easier to interface with smart contracts</li>
 <li>web3 - JS library to interface with smart contracts</li>
 <li>webpack - JS bundler</li>
 <li>file-loader - A webpack plugin used to make it aware of our index.html</li>
@@ -89,7 +64,8 @@ npm install --save-dev ethereumjs-testrpc</code></pre>
 <h1 id="write-code">Write code</h1>
 <p>Our javascript entry point is <code>app/js/app.js</code>. This should be the main javascript file which requires all other modules.</p>
 <p>Use the following template for the file <code>app/js/app.js</code>:</p>
-<p>TODO: Use strict TODO: Linter</p>
+<p>TODO: Use strict</p>
+<p>TODO: Linter</p>
 <pre><code>// Tell webpack to copy the index.html file to the build directory
 require(&quot;file-loader?name=../index.html!../index.html&quot;);
 
@@ -107,11 +83,11 @@ function init_contract() {
         web3 = new Web3(web3.currentProvider);
     } else {
         // Your preferred fallback.
-        web3 = new Web3(new Web3.providers.HttpProvider(&#39;http://localhost:8545&#39;    )); 
+        web3 = new Web3(new Web3.providers.HttpProvider(&#39;http://localhost:8545&#39;)); 
     }
 
     // Use JSON info from &#39;truffle compile&#39; to load the contract
-    Contract = truffleContract(require(&quot;../../build/contracts/    Contract.json&quot;));
+    Contract = truffleContract(require(&quot;../../build/contracts/Contract.json&quot;)); 
     Contract.setProvider(web3.currentProvider);
 
     // To help with debugging we expose web3 and the contract as global vars. This way we can use them from the browser console
@@ -136,15 +112,15 @@ $(document).ready(function() {
         &lt;meta name=&quot;author&quot; content=&quot;TODO&quot;&gt;
 
         &lt;!--[if lt IE 9]&gt;
-        &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3    /html5shiv.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js&quot;&gt;&lt;/script&gt;
         &lt;![endif]--&gt;
     &lt;/head&gt;
 
     &lt;body&gt;
         &lt;!-- HTML code goes here --&gt;
-
         &lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
-    &lt;/body&gt;</code></pre>
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
 <h1 id="deploy-the-smart-contract">Deploy the smart contract</h1>
 <p>During the development we use testrpc. This is a in-memory version of the Ethereum blockchain. Start it with:</p>
 <pre><code>./node_modules/.bin/testrpc -d</code></pre>
@@ -155,6 +131,20 @@ $(document).ready(function() {
 <h1 id="run-test-for-smart-contracts">Run test for smart contracts</h1>
 <p>Test are stored in <code>./tests</code> and are written in mochajs. To run them, make sure testrpc is running and start the tests with:</p>
 <pre><code>./node_modules/.bin/truffle test</code></pre>
+<h1 id="configure-webpack">Configure webpack</h1>
+<p>Create a new file <code>./webpack.config.js</code> with the following content:</p>
+<pre><code>var path = require(&#39;path&#39;);
+
+module.exports = {
+  entry: &#39;./app/js/app.js&#39;,
+  output: {
+    filename: &#39;app.js&#39;,
+    path: __dirname + &#39;/build/app/js&#39;
+  },
+  module: {
+    loaders: []
+  }
+};</code></pre>
 <h1 id="start-development-http-server">Start development http server</h1>
 <p>Start the webpack-dev-server. This server serves and updates the compiled javascript file from memory and all the files in content-base:</p>
 <pre><code>./node_modules/.bin/webpack-dev-server --open --content-base build/app/ --output-public-path js</code></pre>
@@ -162,7 +152,7 @@ $(document).ready(function() {
 <p>And run it with:</p>
 <pre><code>npm start</code></pre>
 <h1 id="build-the-project">Build the project</h1>
-<p>TODO: Uglify</p>
+<p>TODO: Uglify/Minify</p>
 <p>Compile the smart contracts:</p>
 <pre><code>./node_modules/.bin/truffle compile
 ./node_modules/.bin/webpack</code></pre>
