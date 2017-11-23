@@ -156,6 +156,10 @@ Certification
 
 : [B9Lab Certified Ethereum Developer](https://academy.b9lab.com/courses/course-v1:B9lab+ETH-18+2017-11/about)
 
+19/02/2016
+
+: [EXIN Foundation Certificate in OpenStack Software](http://jonaspfannschmidt.com/CV/EXIN.pdf)
+
 ----
 
 > <jonas.pfannschmidt@gmail.com> • +353 85 2811165 • Geeha South, Kinvara, Co. Galway, Ireland
