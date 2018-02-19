@@ -20,7 +20,11 @@ experienced every aspect of the software development life-cycle.
 Corporate Experience
 --------------------
 
-Since 10/2011
+Since 01/2018
+
+:   *Lead Engineer at [Blockdaemon](https://www.blockdaemon.com)*
+
+10/2011 - 12/2017
 
 :   *Software developer and Consultant at [Hewlett Packard 
     Enterprise](https://www.hpe.com) (Galway, Ireland)*
