@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/jonaspf
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://jonaspfannschmidt.com
+  * I am jonaspf (https://keybase.io/jonaspf) on keybase.
+  * I have a public key ASCr5nrf_TjnIu2pM823Scn45eCMa450-69e9rT5Od9BRQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120abe67adffd38e722eda933cdb749c9f8e5e08c6b8e74fbaf5ef6b4f939df41450a",
+      "host": "keybase.io",
+      "kid": "0120abe67adffd38e722eda933cdb749c9f8e5e08c6b8e74fbaf5ef6b4f939df41450a",
+      "uid": "7dee8cae7850d899b408031dea935719",
+      "username": "jonaspf"
+    },
+    "merkle_root": {
+      "ctime": 1520885643,
+      "hash": "63fa03d6e3dceda8e089488a178e491e65c3fca240fd11869eef292037094580da5e632eaaa98ad3641bcc96d0b67abbfb52283e6017db91cffc722a846996f8",
+      "hash_meta": "23e54a55c9d02e2f97dc3f08272072307b15a7a5bdf510a50a80b52d506623fd",
+      "seqno": 2226024
+    },
+    "service": {
+      "hostname": "jonaspfannschmidt.com",
+      "protocol": "http:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.45"
+  },
+  "ctime": 1520885665,
+  "expire_in": 504576000,
+  "prev": "22b3186d58af2bbbe86752659141c5dfb24527dd7a608f74ed4358120ee62dd0",
+  "seqno": 10,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgq+Z63/045yLtqTPNt0nJ+OXgjGuOdPuvXva0+TnfQUUKp3BheWxvYWTFA0x7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwYWJlNjdhZGZmZDM4ZTcyMmVkYTkzM2NkYjc0OWM5ZjhlNWUwOGM2YjhlNzRmYmFmNWVmNmI0ZjkzOWRmNDE0NTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwYWJlNjdhZGZmZDM4ZTcyMmVkYTkzM2NkYjc0OWM5ZjhlNWUwOGM2YjhlNzRmYmFmNWVmNmI0ZjkzOWRmNDE0NTBhIiwidWlkIjoiN2RlZThjYWU3ODUwZDg5OWI0MDgwMzFkZWE5MzU3MTkiLCJ1c2VybmFtZSI6ImpvbmFzcGYifSwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE1MjA4ODU2NDMsImhhc2giOiI2M2ZhMDNkNmUzZGNlZGE4ZTA4OTQ4OGExNzhlNDkxZTY1YzNmY2EyNDBmZDExODY5ZWVmMjkyMDM3MDk0NTgwZGE1ZTYzMmVhYWE5OGFkMzY0MWJjYzk2ZDBiNjdhYmJmYjUyMjgzZTYwMTdkYjkxY2ZmYzcyMmE4NDY5OTZmOCIsImhhc2hfbWV0YSI6IjIzZTU0YTU1YzlkMDJlMmY5N2RjM2YwODI3MjA3MjMwN2IxNWE3YTViZGY1MTBhNTBhODBiNTJkNTA2NjIzZmQiLCJzZXFubyI6MjIyNjAyNH0sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJqb25hc3BmYW5uc2NobWlkdC5jb20iLCJwcm90b2NvbCI6Imh0dHA6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjQ1In0sImN0aW1lIjoxNTIwODg1NjY1LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwicHJldiI6IjIyYjMxODZkNThhZjJiYmJlODY3NTI2NTkxNDFjNWRmYjI0NTI3ZGQ3YTYwOGY3NGVkNDM1ODEyMGVlNjJkZDAiLCJzZXFubyI6MTAsInRhZyI6InNpZ25hdHVyZSJ9o3NpZ8RArpg9zBhru6qwn2n38MpOsw3EBPHfcfwyZj7lCC9FlLpoOYrMQj+OyQQmSO1GxpUozcnlo8WO3PodJbzO5Aw2D6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIM13xCMF2CRypIMuVvwcCj0gP0UjRyziBvCpQKg8qDW7o3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/jonaspf
+
+==================================================================
