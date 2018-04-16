@@ -22,7 +22,7 @@ Corporate Experience
 
 Since 01/2018
 
-:   *Lead Engineer at [Blockdaemon](https://www.blockdaemon.com)*
+:   *Principal Blockchain Engineer at [Blockdaemon](https://www.blockdaemon.com)*
 
 10/2011 - 12/2017
 

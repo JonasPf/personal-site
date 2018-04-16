@@ -23,7 +23,11 @@ development life-cycle.
 
 Corporate Experience
 
-Since 10/2011
+Since 01/2018
+
+    _Principal Blockchain Engineer at Blockdaemon_
+
+10/2011 - 12/2017
 
     _Software developer and Consultant at Hewlett Packard Enterprise
     (Galway, Ireland)_
@@ -39,6 +43,7 @@ Since 10/2011
             related topics.
         -   Started the Catena - Blockchain as a Service project (see
             below in section “Open Source”).
+
     -   Technical lead in multiple software projects in which we
         developed customer specific modifications to Helion OpenStack
         and Helion Stackato. Technologies: OpenStack, Python,
@@ -84,8 +89,8 @@ Open Source
 Catena
 
     Technical lead and project founder of Catena Blockchain as a Service
-    , a simple way to deploy, maintain and work with blockchains
-    on clouds.
+    , a simple way to deploy, maintain and work with blockchains on
+    clouds.
 
 Cpmerge
 
@@ -123,8 +128,8 @@ Blockchain
 Python
 
     Talks about HTTP Requests and Magic Methods presented as part of a
-    weekly internal training and knowledge exchange that I organized
-    in HPE.
+    weekly internal training and knowledge exchange that I organized in
+    HPE.
 
 
 Education
@@ -148,4 +153,4 @@ Certification
 ------------------------------------------------------------------------
 
   jonas.pfannschmidt@gmail.com • +353 85 2811165 • Geeha South, Kinvara,
-  Co. Galway, Ireland
+  Co. Galway, Ireland

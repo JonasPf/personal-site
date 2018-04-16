@@ -10,7 +10,7 @@ CV.docx: CV.md
 	pandoc --from markdown --to docx -o CV.docx CV.md
 
 CV.txt: CV.md
-	pandoc --standalone --smart --from markdown --to plain -o CV.txt CV.md
+	pandoc --standalone --from markdown --to plain -o CV.txt CV.md
 
 clean:
 	rm -f *.html *.pdf *.docx *.txt
