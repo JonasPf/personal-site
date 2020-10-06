@@ -1,4 +1,4 @@
 # docker build . --tag personal-site:latest
 
-FROM nginx
+FROM nginx:1.17
 COPY . /usr/share/nginx/html
