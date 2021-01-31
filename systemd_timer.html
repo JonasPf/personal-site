@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Systemd Timer</title>
+</head>
+<body>
+    <h1>Systemd Timer</h1>
+    <p>Author: <a href="http://jonaspf.github.io/" rel="author">Jonas Pfannschmidt</a><br>Email: jonas.pfannschmidt at gmail.com<br>Date: 31/01/2021</p>
+
+    <p>I keep forgetting how to do systemd timers. To avoid having to Google it, I'll just put it here ;-)</p>
+
+    <h2>The Code</h2>
+
+    <h3><code>/etc/systemd/system/my.timer</code></h3>
+
+    <pre>
+      <code>
+[Unit]
+Description=Run daily at 8am
+
+[Timer]
+OnCalendar=*-*-* 8:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+      </code>
+    </pre>
+
+    <h3><code>/etc/systemd/system/my.service</code></h3>
+
+    <pre>
+      <code>
+[Unit]
+Description=Run my
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/my --parameter
+      </code>
+    </pre>
+
+    <p>Behavior of oneshot is similar to simple; however, the service manager will consider the unit up after the main process exits. <a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">Source</a></p>
+
+    <p>The service unit will be controlled by the timer unit. Therefore it is enough to start/enable the timer unit: <code>sudo systemctl daemon-reload &amp;&amp; sudo systemctl start my.timer &amp;&amp; sudo systemctl enable my.timer</code></p>
+
+    <h2>Ansible</h2>
+
+    <p>This is how to do it in Ansible:</p>
+
+    <pre>
+      <code>
+tasks:
+- name: Create systemd timer
+  copy:
+    content: |
+      [Unit]
+      Description=Run daily at 8am
+
+      [Timer]
+      OnCalendar=*-*-* 8:00:00
+      Persistent=true
+
+      [Install]
+      WantedBy=timers.target
+    dest:
+      /etc/systemd/system/my.timer
+    mode: '0644'
+    owner: root
+    group: root
+  become_user: root
+  become: true
+
+- name: Create systemd service
+  copy:
+    content: |
+      [Unit]
+      Description=Run my
+
+      [Service]
+      Type=oneshot
+      ExecStart=my --param
+    dest:
+      /etc/systemd/system/my.service
+    mode: '0644'
+    owner: root
+    group: root
+  become_user: root
+  become: true
+
+- name: Activate systemd timer
+  systemd:
+    name: my.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  become_user: root
+  become: true
+      </code>
+    </pre>
+
+
+
+
+</body>
+</html>
